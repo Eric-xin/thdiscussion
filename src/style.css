@@ -1,0 +1,150 @@
+/* Layout: five pages of figures and nothing else; each page is a two-column grid of charts. */
+:root {
+  --bg: #f7f6f2;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink2: #52514e;
+  --ink3: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --tag: #e3120b;
+  --hi: #e34948;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --s4: #eda100;
+  --s5: #e87ba4;
+  --mute: #b4b2a9;
+  --band: #f3e3c2;
+  --land: #e4e2d9;
+  --heat1: #f3c5bd;
+  --heat2: #e2675c;
+  --heat3: #a8241c;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "IBM Plex Serif", Georgia, serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #ffffff;
+    --ink2: #c3c2b7;
+    --ink3: #898781;
+    --grid: #2c2c2a;
+    --axis: #4a4a46;
+    --tag: #f0392f;
+    --hi: #e66767;
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --s4: #c98500;
+    --s5: #d55181;
+    --mute: #6b6a65;
+    --band: #3a3222;
+    --land: #34342f;
+    --heat1: #6b3a35;
+    --heat2: #c9544a;
+    --heat3: #ff8a7d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d0d0d;
+  --surface: #1a1a19;
+  --ink: #ffffff;
+  --ink2: #c3c2b7;
+  --ink3: #898781;
+  --grid: #2c2c2a;
+  --axis: #4a4a46;
+  --tag: #f0392f;
+  --hi: #e66767;
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --s5: #d55181;
+  --mute: #6b6a65;
+  --band: #3a3222;
+  --land: #34342f;
+  --heat1: #6b3a35;
+  --heat2: #c9544a;
+  --heat3: #ff8a7d;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.45;
+}
+#app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 1680px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 3vw, 40px);
+  padding-block: 10px 14px;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; }
+
+/* page tabs */
+.tabs { display: flex; gap: 4px 22px; flex-wrap: wrap; font-family: var(--display); border-bottom: 1px solid var(--axis); }
+.tab { display: inline-flex; align-items: baseline; gap: 7px; padding: 4px 0 8px; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none; cursor: pointer; font-weight: 600; font-size: 0.98rem; color: var(--ink3); }
+.tab:hover { color: var(--ink); }
+.tab.on { color: var(--ink); border-bottom-color: var(--tag); }
+.num { font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+
+/* "pair": two equal maps. "lead": a large map with two smaller figures stacked beside it. */
+.sheet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px clamp(14px, 2vw, 28px); align-items: start; }
+.sheet.lead { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.sheet.lead > :first-child { grid-row: span 2; }
+.figure { margin: 0; min-width: 0; background: var(--surface); padding: 0 clamp(12px, 1.4vw, 20px) 10px; border-top: 1px solid var(--ink); }
+.tag { width: 36px; height: 7px; background: var(--tag); margin-bottom: 8px; }
+.figure h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.1rem, 1.55vw, 1.45rem); line-height: 1.12; margin: 0; text-wrap: balance; }
+.sub { margin: 2px 0 6px; color: var(--ink2); font-size: clamp(0.85rem, 1vw, 0.98rem); }
+.subhead { margin: 4px 0 0; font-family: var(--display); font-weight: 600; color: var(--ink2); font-size: 0.9rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 4px; font-size: 0.82rem; color: var(--ink2); }
+.key { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+.plot-svg { display: block; width: 100%; height: auto; overflow: visible; }
+figcaption { margin-top: 6px; font-size: 0.7rem; line-height: 1.35; color: var(--ink3); }
+figcaption a { color: inherit; }
+
+/* chart text and marks */
+.plot-svg text { font-family: var(--display); fill: var(--ink2); font-size: 14px; }
+.plot-svg .tick { fill: var(--ink3); font-size: 13px; }
+.plot-svg .label { fill: var(--ink); font-size: 15px; }
+.plot-svg .value { fill: var(--ink2); font-size: 14px; font-variant-numeric: tabular-nums; }
+.plot-svg .note { fill: var(--ink2); font-size: 14px; }
+.plot-svg .strong { font-weight: 700; fill: var(--ink); }
+.map-svg { overflow: hidden; }
+.country { fill: var(--land); stroke: var(--surface); stroke-width: 0.6; }
+.map-line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.map-dot { stroke: var(--surface); stroke-width: 1.5; }
+.map-ring { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 3 3; }
+.plot-svg .map-label { fill: var(--ink); font-size: 17px; paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.plot-svg .map-label.small { font-size: 15px; fill: var(--ink2); font-weight: 400; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+.axis { stroke: var(--axis); stroke-width: 1.5; }
+.ref { stroke: var(--ink2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.leader { stroke: var(--ink3); stroke-width: 1; }
+.band { fill: var(--band); }
+.plot-svg .pt { stroke: var(--surface); stroke-width: 2; }
+.ghost { stroke: var(--axis); stroke-width: 1.5; }
+.cross { stroke: var(--hi); stroke-width: 4; stroke-linecap: round; }
+.tooltip { position: fixed; z-index: 10; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 0.85rem; padding: 5px 9px; border-radius: 3px; max-width: 320px; }
+
+@media (max-width: 820px) {
+  .sheet, .sheet.lead { grid-template-columns: minmax(0, 1fr); }
+  .sheet.lead > :first-child { grid-row: auto; }
+}
